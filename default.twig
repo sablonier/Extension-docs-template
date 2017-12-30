@@ -1,10 +1,19 @@
+{% if not pagetitle and menu is iterable %}
+    {% set pagetitle = "" %}
+    {% for filename, item in menu %}
+        {% if filename|replace({'.md': '.html'}) == currentFile|replace({'.md': '.html'}) %}
+            {% set pagetitle = item.label|striptags %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ title }}</title>
+        <title>{% if pagetitle %}{{ pagetitle }} &raquo; {% endif %}{{ title }}</title>
 
         <link rel="stylesheet" href="{{ baseUrl }}/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ baseUrl }}/css/font-awesome.min.css">
@@ -18,7 +27,7 @@
             <a class="navbar-brand" href="{{ baseUrl }}/">
                 {{ title|default('The title') }}
                 <small class="hidden-xs hidden-sm">
-                    {{ subTitle|default('This is the default subtitle!') }}
+                    {{ pagetitle|default(subTitle)|default('This is the default subtitle!') }}
                 </small>
             </a>
 
@@ -28,20 +37,27 @@
                 </a>
             {% endif %}
 
+        {# Tipue Search form #}
+        <form action="{{ baseUrl }}/search.html">
+            <input type="text" name="q" id="tipue_search_input" pattern=".{3,}" title="At least 3 characters" placeholder="Search…" required>
+        </form>
+
         </header>
 
         <main class="{{ menu ? 'container-fluid' : 'container' }}">
             <div class="row">
 
-                {% if menu is defined %}
+                {% if menu is iterable %}
 
                     <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
 
                         <ul class="nav nav-pills nav-stacked">
-                            {% for itemId, item in menu.items %}
-                                <li class="{{ itemId == currentMenu ? 'active' }}">
-                                    <a href="{{ item.absoluteUrl|default(baseUrl ~ '/' ~ item.relativeUrl) }}">
-                                        {{ item.text|raw }}
+                            {% for filename, item in menu %}
+                                {% set filename = filename|replace({'.md': '.html'}) %}
+                                {% set currentFile = currentFile|replace({'.md': '.html'}) %}
+                                <li class="{{ filename == currentFile ? 'active' }} {{ item.class|default() }}">
+                                    <a href="{{ item.absoluteUrl|default(baseUrl ~ '/' ~ filename) }}">
+                                        {{ item.label|raw }}
                                     </a>
                                 </li>
                             {% endfor %}
@@ -51,7 +67,7 @@
 
                 {% endif %}
 
-                <section id="content" class="{{ menu ? 'col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10' : 'col-sm-12' }}">
+                <section id="content" class="{{ menu ? 'col-sm-offset-4 col-lg-offset-3 col-sm-9 col-lg-8 ' : 'col-sm-10' }}">
                     {{ content|raw }}
                 </section>
 
@@ -66,16 +82,40 @@
             </div>
         </footer>
 
-        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script src="//yastatic.net/highlightjs/8.2/highlight.min.js"></script>
 
         <script>
+        var tipuesearch_pages = [
+        {%- if menu is iterable -%}
+            {%- for filename, item in menu -%}
+                "{{ baseUrl }}/{{ filename|replace({'.md': '.html'}) }}" {%- if not loop.last %}, {% endif %}
+            {%- endfor -%}
+        {%- endif -%}
+        ];
+        </script>
+
+        <link rel="stylesheet" href="{{ baseUrl }}/tipuesearch/css/tipuesearch.css">
+        <script src="{{ baseUrl }}/tipuesearch/tipuesearch_set.js"></script>
+        <script src="{{ baseUrl }}/tipuesearch/tipuesearch.min.js"></script>
+
+        <script>
+
             $(function() {
                 $("section>h1").wrap('<div class="page-header" />');
                 // Syntax highlighting
                 hljs.initHighlightingOnLoad();
             });
+
+            $(document).ready(function() {
+                $('#tipue_search_input').tipuesearch({
+                    'mode': 'live',
+                    'liveDescription': '#content',
+                    'liveContent': '#content'
+                });
+            });
+
         </script>
 
     </body>
