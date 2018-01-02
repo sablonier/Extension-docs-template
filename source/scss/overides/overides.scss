@@ -3,8 +3,8 @@
 
 //=== Initial Variables
 
-@import "../../../node_modules/bulma/sass/utilities/initial-variables";
-@import "../../../node_modules/bulma/sass/utilities/functions";
+@import "../../node_modules/bulma/sass/utilities/initial-variables";
+@import "../../node_modules/bulma/sass/utilities/functions";
 
 //=== Custom Colours
 
@@ -71,4 +71,4 @@ $code-background: $white-ter;
 
 //=== Import Derived Variables
 
-@import "../../../node_modules/bulma/sass/utilities/derived-variables.sass";
+@import "../../node_modules/bulma/sass/utilities/derived-variables.sass";

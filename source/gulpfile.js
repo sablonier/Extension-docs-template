@@ -21,7 +21,7 @@ const   development     = environments.development,
 //=== Compile Javascript
 
 gulp.task('js', function() {
-    
+
     // Watch Switch
     let watchBuild;
 
@@ -32,16 +32,16 @@ gulp.task('js', function() {
     }
 
     // Javascript Webpack Function
-    return gulp.src('source/js/main.js')
+    return gulp.src('js/main.js')
         .pipe(webpack({
             watch: watchBuild,
             config: require('./webpack.config.js')
         }))
         .pipe(production(uglify()))
-        .pipe(gulp.dest('js'));
+        .pipe(gulp.dest('../public/js'));
 
   });
- 
+
  //=== Compile SASS
 
 gulp.task('sass', function() {
@@ -51,8 +51,8 @@ gulp.task('sass', function() {
                 autoprefixer({browsers: ['last 1 version']})
             ];
 
-    // SASS Compiler Routine        
-    return gulp.src(['source/scss/main.scss'])
+    // SASS Compiler Routine
+    return gulp.src(['scss/main.scss'])
 
         // Init Source Map In Development
         .pipe(development(sourcemaps.init()))
@@ -70,7 +70,7 @@ gulp.task('sass', function() {
         .pipe(production(postcss([cssnano()])))
 
         // Pipe to Build Folder
-        .pipe(gulp.dest("css"))
+        .pipe(gulp.dest('../public/css'))
 
         // Stream to BrowserSync in Development
         .pipe(development(browserSync.stream()))
@@ -80,8 +80,8 @@ gulp.task('sass', function() {
 //=== Move Assets
 
 gulp.task('assets', function() {
-    return gulp.src('source/assets/**')
-        .pipe(gulp.dest('assets'))
+    return gulp.src('assets/**')
+        .pipe(gulp.dest('../public/assets'))
 })
 
 //=== Setup Server
@@ -91,13 +91,13 @@ gulp.task('server', ['sass'], function() {
     // Run LiveReload Server in Development
     if(currentEnv == 'development'){
         // browserSync.init({
-        //     server: "./build"  
+        //     server: "./build"
         // });
 
         // Watch Directories for changes
-        // gulp.watch(['source/assets/**'], ['assets']); 
-        gulp.watch(['source/scss/**'], ['sass']);
-        // gulp.watch("build/*.html").on('change', browserSync.reload);   
+        // gulp.watch(['assets/**'], ['assets']);
+        gulp.watch(['scss/**'], ['sass']);
+        // gulp.watch("build/*.html").on('change', browserSync.reload);
     }
 
 });

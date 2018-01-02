@@ -57,6 +57,7 @@
             <main class="docs__main">
                 <header class="docs__main--header">
 
+                    {% if menu is iterable %}
                     {# Tipue Search form #}
                     <div class="column is-8">
                         <form action="{{ baseUrl }}/search.html" class="control has-icons-right">
@@ -66,6 +67,7 @@
                             </span>
                         </form>
                     </div>
+                    {% endif %}
 
                     {% if github is defined %}
                         <a href="https://github.com/{{ github.user }}/{{ github.repo }}">
@@ -110,8 +112,6 @@
         <script src="{{ baseUrl }}/js/bundle.js"></script>
 
         <script>
-
-            hljs.initHighlightingOnLoad();
 
             $(document).ready(function() {
                 $('#tipue_search_input').tipuesearch({
