@@ -11,6 +11,8 @@ $header-height: 60px;
         background: $primary;
         background: linear-gradient(to top, $primary 0%, darken($primary, 10%) 100%);
         width: $sidebar-width;
+        display: flex;
+        flex-direction: column;
         &--brand{
             height: $header-height;
             width: 100%;
@@ -21,6 +23,20 @@ $header-height: 60px;
             @include p(3);  
             @include mt(3);
             $menu-item-color: $white !important; 
+            .sub {
+                padding-left: 0.75em;
+                border-left: 1px solid $white;
+                margin: 0 0.75em;        
+            }
+        }
+        &--footer {
+            margin-top: auto;
+            @include p(3);  
+            color: $white;
+            a {
+                color: $white;
+                font-weight: bold;
+            }
         }
     }
     &__main{
