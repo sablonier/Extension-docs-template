@@ -15,78 +15,84 @@
 
         <title>{% if pagetitle %}{{ pagetitle }} &raquo; {% endif %}{{ title }}</title>
 
-        <link rel="stylesheet" href="{{ baseUrl }}/css/bootstrap.min.css">
-        <link rel="stylesheet" href="{{ baseUrl }}/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
         <link rel="stylesheet" href="{{ baseUrl }}/css/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,700" rel="stylesheet">
     </head>
     <body>
 
-        <header class="navbar navbar-default navbar-fixed-top">
-
-            <a class="navbar-brand" href="{{ baseUrl }}/">
-                {{ title|default('The title') }}
-                <small class="hidden-xs hidden-sm">
-                    {{ pagetitle|default(subTitle)|default('This is the default subtitle!') }}
-                </small>
-            </a>
-
-
-            {# Tipue Search form #}
-            <form action="{{ baseUrl }}/search.html" class="hidden-xs">
-                <input type="text" name="q" id="tipue_search_input" pattern=".{3,}" title="At least 3 characters" placeholder="Search…" required>
-            </form>
-
-            {% if github is defined %}
-                <a href="https://github.com/{{ github.user }}/{{ github.repo }}">
-                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
-                </a>
-            {% endif %}
-
-
-        </header>
-
-        <main class="{{ menu ? 'container-fluid' : 'container' }}">
-            <div class="row">
+        <div class="docs">
+            <aside class="docs__sidebar">
+                <div class="docs__sidebar--brand">
+                    <div class="brand">
+                        <a class="brand--text" href="{{ baseUrl }}/">
+                            {{ title|default('The title') }}
+                        </a>
+                    </div>
+                </div>
 
                 {% if menu is iterable %}
 
-                    <nav id="sidebar" class="col-sm-3 col-lg-3" role="navigation">
-
-                        <ul class="nav nav-pills nav-stacked">
+                    <nav id="sidebar" class="docs__sidebar--menu menu" role="navigation">
+                        <ul class="menu-list">
                             {% for filename, item in menu %}
                                 {% set filename = filename|replace({'.md': '.html'}) %}
                                 {% set currentFile = currentFile|replace({'.md': '.html'}) %}
-                                <li class="{{ filename == currentFile ? 'active' }} {{ item.class|default() }}">
-                                    <a href="{{ item.absoluteUrl|default(baseUrl ~ '/' ~ filename) }}">
+                                <li class="{{ item.class|default() }}">
+                                    <a href="{{ item.absoluteUrl|default(baseUrl ~ '/' ~ filename) }}" class="{{ filename == currentFile ? 'is-active' }}">
                                         {{ item.label|raw }}
                                     </a>
                                 </li>
                             {% endfor %}
                         </ul>
-
                     </nav>
 
                 {% endif %}
 
-                <section id="content" class="{{ menu ? 'col-sm-offset-4 col-lg-offset-4 col-sm-8 col-lg-7' : 'col-sm-10' }}">
-                    {{ content|raw }}
-                </section>
+                <div class="{{ menu ? 'container-fluid' : 'container' }}">
+                    <p class="text-muted">
+                        Website generated with <a href="http://couscous.io" title="Markdown website generator">Couscous</a>
+                    </p>
+                </div>
+            </aside>
+            <main class="docs__main">
+                <header class="docs__main--header">
 
-            </div>
-        </main>
+                    {# Tipue Search form #}
+                    <div class="column is-8">
+                        <form action="{{ baseUrl }}/search.html" class="control has-icons-right">
+                            <input class="input" type="text" name="q" id="tipue_search_input" pattern=".{3,}" title="At least 3 characters" placeholder="Search…" required>
+                            <span class="icon is-small is-right">
+                                <i class="icon-search"></i>
+                            </span>
+                        </form>
+                    </div>
 
-        <footer>
-            <div class="{{ menu ? 'container-fluid' : 'container' }}">
-                <p class="text-muted">
-                    website generated with <a href="http://couscous.io" title="Markdown website generator">Couscous</a>
-                </p>
-            </div>
-        </footer>
+                    {% if github is defined %}
+                        <a href="https://github.com/{{ github.user }}/{{ github.repo }}">
+                            <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                        </a>
+                    {% endif %}
+
+                </header>
+
+                <div class="docs__main--breadcrumbs">
+                    <div class="pagetitle">
+                        {{ pagetitle|default(subTitle)|default('This is the default subtitle!') }}
+                    </div>
+                </div>
+
+                <div class="docs__main--body">
+
+                    <section id="content" class="content">
+                        {{ content|raw }}
+                    </section>
+
+                </div>
+            </main>
+
+        </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-        <script src="//yastatic.net/highlightjs/8.2/highlight.min.js"></script>
 
         <script>
         var tipuesearch_pages = [
@@ -98,9 +104,10 @@
         ];
         </script>
 
-        <link rel="stylesheet" href="{{ baseUrl }}/tipuesearch/css/tipuesearch.css">
+
         <script src="{{ baseUrl }}/tipuesearch/tipuesearch_set.js"></script>
         <script src="{{ baseUrl }}/tipuesearch/tipuesearch.min.js"></script>
+        <script src="{{ baseUrl }}/js/bundle.js"></script>
 
         <script>
 
