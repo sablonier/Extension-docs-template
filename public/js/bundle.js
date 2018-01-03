@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,14 +68,233 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
+var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(1);
+(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [module, __webpack_require__(4), __webpack_require__(6), __webpack_require__(7)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(module, require('./clipboard-action'), require('tiny-emitter'), require('good-listener'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod, global.clipboardAction, global.tinyEmitter, global.goodListener);
+        global.clipboard = mod.exports;
+    }
+})(undefined, function (module, _clipboardAction, _tinyEmitter, _goodListener) {
+    'use strict';
 
-__webpack_require__(4);
+    var _clipboardAction2 = _interopRequireDefault(_clipboardAction);
+
+    var _tinyEmitter2 = _interopRequireDefault(_tinyEmitter);
+
+    var _goodListener2 = _interopRequireDefault(_goodListener);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
+        return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
+    } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
+    };
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
+
+    function _possibleConstructorReturn(self, call) {
+        if (!self) {
+            throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        }
+
+        return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
+    }
+
+    function _inherits(subClass, superClass) {
+        if (typeof superClass !== "function" && superClass !== null) {
+            throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
+        }
+
+        subClass.prototype = Object.create(superClass && superClass.prototype, {
+            constructor: {
+                value: subClass,
+                enumerable: false,
+                writable: true,
+                configurable: true
+            }
+        });
+        if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }
+
+    var Clipboard = function (_Emitter) {
+        _inherits(Clipboard, _Emitter);
+
+        /**
+         * @param {String|HTMLElement|HTMLCollection|NodeList} trigger
+         * @param {Object} options
+         */
+        function Clipboard(trigger, options) {
+            _classCallCheck(this, Clipboard);
+
+            var _this = _possibleConstructorReturn(this, (Clipboard.__proto__ || Object.getPrototypeOf(Clipboard)).call(this));
+
+            _this.resolveOptions(options);
+            _this.listenClick(trigger);
+            return _this;
+        }
+
+        /**
+         * Defines if attributes would be resolved using internal setter functions
+         * or custom functions that were passed in the constructor.
+         * @param {Object} options
+         */
+
+        _createClass(Clipboard, [{
+            key: 'resolveOptions',
+            value: function resolveOptions() {
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+                this.action = typeof options.action === 'function' ? options.action : this.defaultAction;
+                this.target = typeof options.target === 'function' ? options.target : this.defaultTarget;
+                this.text = typeof options.text === 'function' ? options.text : this.defaultText;
+                this.container = _typeof(options.container) === 'object' ? options.container : document.body;
+            }
+        }, {
+            key: 'listenClick',
+            value: function listenClick(trigger) {
+                var _this2 = this;
+
+                this.listener = (0, _goodListener2.default)(trigger, 'click', function (e) {
+                    return _this2.onClick(e);
+                });
+            }
+        }, {
+            key: 'onClick',
+            value: function onClick(e) {
+                var trigger = e.delegateTarget || e.currentTarget;
+
+                if (this.clipboardAction) {
+                    this.clipboardAction = null;
+                }
+
+                this.clipboardAction = new _clipboardAction2.default({
+                    action: this.action(trigger),
+                    target: this.target(trigger),
+                    text: this.text(trigger),
+                    container: this.container,
+                    trigger: trigger,
+                    emitter: this
+                });
+            }
+        }, {
+            key: 'defaultAction',
+            value: function defaultAction(trigger) {
+                return getAttributeValue('action', trigger);
+            }
+        }, {
+            key: 'defaultTarget',
+            value: function defaultTarget(trigger) {
+                var selector = getAttributeValue('target', trigger);
+
+                if (selector) {
+                    return document.querySelector(selector);
+                }
+            }
+        }, {
+            key: 'defaultText',
+            value: function defaultText(trigger) {
+                return getAttributeValue('text', trigger);
+            }
+        }, {
+            key: 'destroy',
+            value: function destroy() {
+                this.listener.destroy();
+
+                if (this.clipboardAction) {
+                    this.clipboardAction.destroy();
+                    this.clipboardAction = null;
+                }
+            }
+        }], [{
+            key: 'isSupported',
+            value: function isSupported() {
+                var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['copy', 'cut'];
+
+                var actions = typeof action === 'string' ? [action] : action;
+                var support = !!document.queryCommandSupported;
+
+                actions.forEach(function (action) {
+                    support = support && !!document.queryCommandSupported(action);
+                });
+
+                return support;
+            }
+        }]);
+
+        return Clipboard;
+    }(_tinyEmitter2.default);
+
+    /**
+     * Helper function to retrieve attribute value.
+     * @param {String} suffix
+     * @param {Element} element
+     */
+    function getAttributeValue(suffix, element) {
+        var attribute = 'data-clipboard-' + suffix;
+
+        if (!element.hasAttribute(attribute)) {
+            return;
+        }
+
+        return element.getAttribute(attribute);
+    }
+
+    module.exports = Clipboard;
+});
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(2);
+
+__webpack_require__(11);
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -368,7 +587,7 @@ Prism.languages.yaml = { scalar: { pattern: /([\-:]\s*(?:![^\s]+)?[ \t]*[|>])[ \
     }
 
     if (!Clipboard && "function" === 'function') {
-        Clipboard = __webpack_require__(5);
+        Clipboard = __webpack_require__(0);
     }
 
     var callbacks = [];
@@ -434,7 +653,6 @@ Prism.languages.yaml = { scalar: { pattern: /([\-:]\s*(?:![^\s]+)?[ \t]*[|>])[ \
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 2 */,
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -469,243 +687,13 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-//((=== Copy Code To Clipboard  ===))//
-
-var Clipboard = __webpack_require__(5);
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 (function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [module, __webpack_require__(6), __webpack_require__(8), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof exports !== "undefined") {
-        factory(module, require('./clipboard-action'), require('tiny-emitter'), require('good-listener'));
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(mod, global.clipboardAction, global.tinyEmitter, global.goodListener);
-        global.clipboard = mod.exports;
-    }
-})(undefined, function (module, _clipboardAction, _tinyEmitter, _goodListener) {
-    'use strict';
-
-    var _clipboardAction2 = _interopRequireDefault(_clipboardAction);
-
-    var _tinyEmitter2 = _interopRequireDefault(_tinyEmitter);
-
-    var _goodListener2 = _interopRequireDefault(_goodListener);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
-        return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
-    } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
-    };
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _createClass = function () {
-        function defineProperties(target, props) {
-            for (var i = 0; i < props.length; i++) {
-                var descriptor = props[i];
-                descriptor.enumerable = descriptor.enumerable || false;
-                descriptor.configurable = true;
-                if ("value" in descriptor) descriptor.writable = true;
-                Object.defineProperty(target, descriptor.key, descriptor);
-            }
-        }
-
-        return function (Constructor, protoProps, staticProps) {
-            if (protoProps) defineProperties(Constructor.prototype, protoProps);
-            if (staticProps) defineProperties(Constructor, staticProps);
-            return Constructor;
-        };
-    }();
-
-    function _possibleConstructorReturn(self, call) {
-        if (!self) {
-            throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        }
-
-        return call && ((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === "object" || typeof call === "function") ? call : self;
-    }
-
-    function _inherits(subClass, superClass) {
-        if (typeof superClass !== "function" && superClass !== null) {
-            throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof2(superClass)));
-        }
-
-        subClass.prototype = Object.create(superClass && superClass.prototype, {
-            constructor: {
-                value: subClass,
-                enumerable: false,
-                writable: true,
-                configurable: true
-            }
-        });
-        if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-    }
-
-    var Clipboard = function (_Emitter) {
-        _inherits(Clipboard, _Emitter);
-
-        /**
-         * @param {String|HTMLElement|HTMLCollection|NodeList} trigger
-         * @param {Object} options
-         */
-        function Clipboard(trigger, options) {
-            _classCallCheck(this, Clipboard);
-
-            var _this = _possibleConstructorReturn(this, (Clipboard.__proto__ || Object.getPrototypeOf(Clipboard)).call(this));
-
-            _this.resolveOptions(options);
-            _this.listenClick(trigger);
-            return _this;
-        }
-
-        /**
-         * Defines if attributes would be resolved using internal setter functions
-         * or custom functions that were passed in the constructor.
-         * @param {Object} options
-         */
-
-        _createClass(Clipboard, [{
-            key: 'resolveOptions',
-            value: function resolveOptions() {
-                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-                this.action = typeof options.action === 'function' ? options.action : this.defaultAction;
-                this.target = typeof options.target === 'function' ? options.target : this.defaultTarget;
-                this.text = typeof options.text === 'function' ? options.text : this.defaultText;
-                this.container = _typeof(options.container) === 'object' ? options.container : document.body;
-            }
-        }, {
-            key: 'listenClick',
-            value: function listenClick(trigger) {
-                var _this2 = this;
-
-                this.listener = (0, _goodListener2.default)(trigger, 'click', function (e) {
-                    return _this2.onClick(e);
-                });
-            }
-        }, {
-            key: 'onClick',
-            value: function onClick(e) {
-                var trigger = e.delegateTarget || e.currentTarget;
-
-                if (this.clipboardAction) {
-                    this.clipboardAction = null;
-                }
-
-                this.clipboardAction = new _clipboardAction2.default({
-                    action: this.action(trigger),
-                    target: this.target(trigger),
-                    text: this.text(trigger),
-                    container: this.container,
-                    trigger: trigger,
-                    emitter: this
-                });
-            }
-        }, {
-            key: 'defaultAction',
-            value: function defaultAction(trigger) {
-                return getAttributeValue('action', trigger);
-            }
-        }, {
-            key: 'defaultTarget',
-            value: function defaultTarget(trigger) {
-                var selector = getAttributeValue('target', trigger);
-
-                if (selector) {
-                    return document.querySelector(selector);
-                }
-            }
-        }, {
-            key: 'defaultText',
-            value: function defaultText(trigger) {
-                return getAttributeValue('text', trigger);
-            }
-        }, {
-            key: 'destroy',
-            value: function destroy() {
-                this.listener.destroy();
-
-                if (this.clipboardAction) {
-                    this.clipboardAction.destroy();
-                    this.clipboardAction = null;
-                }
-            }
-        }], [{
-            key: 'isSupported',
-            value: function isSupported() {
-                var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['copy', 'cut'];
-
-                var actions = typeof action === 'string' ? [action] : action;
-                var support = !!document.queryCommandSupported;
-
-                actions.forEach(function (action) {
-                    support = support && !!document.queryCommandSupported(action);
-                });
-
-                return support;
-            }
-        }]);
-
-        return Clipboard;
-    }(_tinyEmitter2.default);
-
-    /**
-     * Helper function to retrieve attribute value.
-     * @param {String} suffix
-     * @param {Element} element
-     */
-    function getAttributeValue(suffix, element) {
-        var attribute = 'data-clipboard-' + suffix;
-
-        if (!element.hasAttribute(attribute)) {
-            return;
-        }
-
-        return element.getAttribute(attribute);
-    }
-
-    module.exports = Clipboard;
-});
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-(function (global, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [module, __webpack_require__(7)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [module, __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -936,7 +924,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 });
 
 /***/ }),
-/* 7 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -985,7 +973,7 @@ function select(element) {
 module.exports = select;
 
 /***/ }),
-/* 8 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1056,14 +1044,14 @@ E.prototype = {
 module.exports = E;
 
 /***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var is = __webpack_require__(10);
-var delegate = __webpack_require__(11);
+var is = __webpack_require__(8);
+var delegate = __webpack_require__(9);
 
 /**
  * Validates all params and calls the right
@@ -1156,7 +1144,7 @@ function listenSelector(selector, type, callback) {
 module.exports = listen;
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1207,13 +1195,13 @@ exports.fn = function (value) {
 };
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var closest = __webpack_require__(12);
+var closest = __webpack_require__(10);
 
 /**
  * Delegates event to a selector.
@@ -1293,7 +1281,7 @@ function listener(element, selector, type, callback) {
 module.exports = delegate;
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1327,6 +1315,17 @@ function closest(element, selector) {
 }
 
 module.exports = closest;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+//((=== Copy Code To Clipboard  ===))//
+
+var Clipboard = __webpack_require__(0);
 
 /***/ })
 /******/ ]);
