@@ -1,20 +1,33 @@
 //((=== Code Block  ===))//
 
-.codeblock{
+.code-toolbar {
     @include my(4);
     box-shadow: $box-shadow;
     border-radius: $radius;
-    &__header{
+    position: relative;
+    .content & {
+        padding-top: calc(1.25em + 40px);
+    }
+    .toolbar {
         @include px(3);
         text-align: right;
-        position: relative;
+        position: absolute;
+        top: 0;
+        left: 0;
         height: 40px;
         width: 100%;
         background: $brand-dark;
         border-radius: $radius $radius 0 0;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     }
-    &__code{
-        border-radius: 0 0 $radius $radius; 
+    .number {
+        font-size: 1rem;
+        min-width: auto;
+        height: auto;
+        margin: 0;
+        padding: 0;
     }
 }
 
