@@ -17,22 +17,33 @@
 
         <link rel="stylesheet" href="{{ baseUrl }}/css/main.css">
         <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,700" rel="stylesheet">
+        <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
     </head>
     <body>
 
-        <div class="docs">
-            <aside class="docs__sidebar">
+        <div class="docs columns is-gapless is-desktop">
+            <aside class="docs__sidebar column is-one-fifth-desktop">
                 <div class="docs__sidebar--brand">
                     <div class="brand">
                         <a class="brand--text" href="{{ baseUrl }}/">
                             {{ title|default('The title') }}
                         </a>
                     </div>
+                    <button class="button button-bars is-primary is-hidden-desktop">
+                        <span class="icon">
+                        <i class="fa fa-bars"></i>
+                        </span>
+                    </button>
+                    <button class="button button-search is-primary is-hidden-desktop">
+                        <span class="icon">
+                        <i class="fa fa-search"></i>
+                        </span>
+                    </button>
                 </div>
 
                 {% if menu is iterable %}
-
-                    <nav id="sidebar" class="docs__sidebar--menu menu" role="navigation">
+                <div class="docs__sidebar--menu">
+                    <nav id="sidebar" class="menu" role="navigation">
                         <ul class="menu-list">
                             {% for filename, item in menu %}
                                 {% set filename = filename|replace({'.md': '.html'}) %}
@@ -45,18 +56,17 @@
                             {% endfor %}
                         </ul>
                     </nav>
-
+                </div>
                 {% endif %}
 
-                <div class="docs__sidebar--footer">
+                <div class="docs__sidebar--footer is-hidden-touch">
                     <p class="text-muted">
                         Website generated with <a href="http://couscous.io" title="Markdown website generator">Couscous</a>
                     </p>
                 </div>
             </aside>
-            <main class="docs__main">
+            <main class="docs__main column is-four-fifths-desktop">
                 <header class="docs__main--header">
-
                     {% if menu is iterable %}
                     {# Tipue Search form #}
                     <div class="column is-8">
@@ -70,28 +80,24 @@
                     {% endif %}
 
                     {% if github is defined %}
-                        <a href="https://github.com/{{ github.user }}/{{ github.repo }}">
+                        <a href="https://github.com/{{ github.user }}/{{ github.repo }}" class="is-hidden-touch">
                             <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
                         </a>
                     {% endif %}
-
                 </header>
 
-                <div class="docs__main--breadcrumbs">
+                <div class="docs__main--breadcrumbs is-hidden-touch">
                     <div class="pagetitle">
                         {{ pagetitle|default(subTitle)|default('This is the default subtitle!') }}
                     </div>
                 </div>
 
                 <div class="docs__main--body">
-
                     <section id="content" class="content">
                         {{ content|raw }}
                     </section>
-
                 </div>
             </main>
-
         </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

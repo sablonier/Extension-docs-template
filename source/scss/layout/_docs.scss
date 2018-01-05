@@ -4,13 +4,16 @@ $sidebar-width: 250px;
 $header-height: 60px;
 
 .docs{
-    display: flex;
+    // display: flex;
     min-height: 100vh;
-    width: 100vw;
+    // width: 100vw;
+    &.columns.is-gapless {
+        margin-bottom: 0;;
+    }
     &__sidebar{
         background: $primary;
         background: linear-gradient(to top, $primary 0%, darken($primary, 10%) 100%);
-        width: $sidebar-width;
+        // width: $sidebar-width;
         display: flex;
         flex-direction: column;
         &--brand{
@@ -18,11 +21,27 @@ $header-height: 60px;
             width: 100%;
             background: $primary;
             box-shadow: 0px 0px 12px 0px transparentize($primary, 0.5);
+            position: relative;
+            .button-bars {
+                position: absolute;
+                top: 12px;
+                left: 1rem;                
+            }
+            .button-search {
+                position: absolute;
+                top: 12px;
+                right: 1rem;                
+            }
         }
         &--menu{
-            @include p(3);  
-            @include mt(3);
-            $menu-item-color: $white !important; 
+            @include touch {
+                display: none;
+            }
+            $menu-item-color: $white !important;
+            .menu {
+                @include p(3);  
+                @include mt(3);
+            }
             .sub {
                 padding-left: 0.75em;
                 border-left: 1px solid $white;
@@ -40,15 +59,20 @@ $header-height: 60px;
         }
     }
     &__main{
-        background: $white;
-        width: calc(100vw - #{$sidebar-width});
+        // background: $white;
+        // width: calc(100vw - #{$sidebar-width});
         &--header{
             z-index: 100;
             background: transparentize($white-bis, 0.03);
             height: $header-height;
-            width: inherit;
-            top: 0;
-            position: fixed;
+            @include touch {
+                display: none;
+            }
+            @include desktop {
+                width: inherit;
+                top: 0;
+                position: fixed;
+            }
             .columns{
                 @include px(3);
                 height: $header-height;
@@ -68,7 +92,9 @@ $header-height: 60px;
         }
         &--body{
             @include p(4);
-            margin-top: $header-height * 2;
+            @include desktop {
+                margin-top: $header-height * 2;
+            }
         }
     }
 }

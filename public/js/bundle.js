@@ -293,6 +293,19 @@ __webpack_require__(2);
 
 __webpack_require__(11);
 
+//((===  JS Entry Point  ===))//
+
+
+//=== Function Imports
+
+$('.button-bars').click(function () {
+    $('.docs__sidebar--menu').slideToggle();
+});
+
+$('.button-search').click(function () {
+    $('.docs__main--header').slideToggle();
+});
+
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {

@@ -13,7 +13,6 @@
  pre[class*="language-"] {
 	 color: $color-code;
 	 text-shadow: none;
-	 font-weight: bold;
 	 font-size: 15px;
 	 font-family: $family-monospace;
 	 direction: ltr;
@@ -120,7 +119,7 @@
 	 color: $color-code-selector;
  }
  
- .token.important,
+//  .token.important,
  .token.bold {
 	 font-weight: bold;
  }
