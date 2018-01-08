@@ -13,7 +13,7 @@ $header-height: 60px;
     &__sidebar{
         background: $primary;
         background: linear-gradient(to top, $primary 0%, darken($primary, 10%) 100%);
-        // width: $sidebar-width;
+        width: $sidebar-width;
         display: flex;
         flex-direction: column;
         &--brand{
@@ -60,7 +60,7 @@ $header-height: 60px;
     }
     &__main{
         // background: $white;
-        // width: calc(100vw - #{$sidebar-width});
+        width: calc(100vw - #{$sidebar-width});
         &--header{
             z-index: 100;
             background: transparentize($white-bis, 0.03);
@@ -94,6 +94,12 @@ $header-height: 60px;
             @include p(4);
             @include desktop {
                 margin-top: $header-height * 2;
+            }
+            .content {
+                max-width: 500px;
+            }
+            pre {
+                width: calc(100vw - (#{$sidebar-width} + 66px));
             }
         }
     }
