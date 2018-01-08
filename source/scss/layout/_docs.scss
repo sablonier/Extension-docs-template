@@ -96,7 +96,7 @@ $header-height: 60px;
                 margin-top: $header-height * 2;
             }
             .content {
-                max-width: 500px;
+                max-width: 640px;
             }
             pre {
                 width: calc(100vw - (#{$sidebar-width} + 66px));
