@@ -306,6 +306,16 @@ $('.button-search').click(function () {
     $('.docs__sidebar--search').slideToggle();
 });
 
+$('h2').each(function (i, el) {
+    var $el, icon, id;
+    $el = $(el);
+    id = $el.attr('id');
+    icon = '¶';
+    if (id) {
+        return $el.append($("<a />").addClass("anchor").attr("href", "#" + id).html(icon));
+    }
+});
+
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
