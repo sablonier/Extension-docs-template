@@ -16,7 +16,7 @@
         <title>{% if pagetitle %}{{ pagetitle }} &raquo; {% endif %}{{ title }}</title>
 
         <link rel="stylesheet" href="{{ baseUrl }}/css/main.css">
-        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,600,700" rel="stylesheet">
         <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
     </head>
     <body>
@@ -40,6 +40,18 @@
                         </span>
                     </button>
                 </div>
+
+                {% if menu is iterable %}
+                {# Tipue Search form #}
+                <div class="docs__sidebar--search">
+                    <form action="{{ baseUrl }}/search.html" class="control has-icons-right">
+                        <input class="input" type="text" name="q" id="tipue_search_input" pattern=".{3,}" title="At least 3 characters" placeholder="Search…" required>
+                        <span class="icon is-small is-right">
+                            <i class="icon-search"></i>
+                        </span>
+                    </form>
+                </div>
+                {% endif %}
 
                 {% if menu is iterable %}
                 <div class="docs__sidebar--menu">
@@ -67,17 +79,9 @@
             </aside>
             <main class="docs__main">
                 <header class="docs__main--header">
-                    {% if menu is iterable %}
-                    {# Tipue Search form #}
-                    <div class="column is-8">
-                        <form action="{{ baseUrl }}/search.html" class="control has-icons-right">
-                            <input class="input" type="text" name="q" id="tipue_search_input" pattern=".{3,}" title="At least 3 characters" placeholder="Search…" required>
-                            <span class="icon is-small is-right">
-                                <i class="icon-search"></i>
-                            </span>
-                        </form>
+                    <div class="pagetitle">
+                        {{ pagetitle|default(subTitle)|default('This is the default subtitle!') }}
                     </div>
-                    {% endif %}
 
                     {% if github is defined %}
                         <a href="https://github.com/{{ github.user }}/{{ github.repo }}" class="is-hidden-touch">
@@ -85,12 +89,6 @@
                         </a>
                     {% endif %}
                 </header>
-
-                <div class="docs__main--breadcrumbs is-hidden-touch">
-                    <div class="pagetitle">
-                        {{ pagetitle|default(subTitle)|default('This is the default subtitle!') }}
-                    </div>
-                </div>
 
                 <div class="docs__main--body">
                     <section id="content" class="content">

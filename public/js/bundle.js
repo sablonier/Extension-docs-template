@@ -303,7 +303,7 @@ $('.button-bars').click(function () {
 });
 
 $('.button-search').click(function () {
-    $('.docs__main--header').slideToggle();
+    $('.docs__sidebar--search').slideToggle();
 });
 
 /***/ }),
