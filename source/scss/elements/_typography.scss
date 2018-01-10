@@ -2,8 +2,8 @@
 
 .lead{
     font-size: $size-4;
-    color: $grey-dark;  
-    font-weight: $weight-light;  
+    color: $grey-dark;
+    font-weight: $weight-light;
 }
 
 .title{
@@ -23,4 +23,9 @@
     align-items: center;
     height: 100%;
     font-size: $size-4;
+}
+
+main a {
+    text-decoration: underline;
+    text-decoration-skip: ink;
 }

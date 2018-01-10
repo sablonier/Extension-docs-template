@@ -36,6 +36,8 @@
     color: $white;
     display: inline-flex;
     align-items: center;
+    text-decoration: none;
+
     &[aria-label]{
         &:after {
             font-family: $family-monospace;
