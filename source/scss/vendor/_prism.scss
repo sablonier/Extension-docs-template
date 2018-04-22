@@ -14,23 +14,9 @@
 	 color: $color-code;
 	 text-shadow: none;
 	 font-size: 14px;
+	 line-height: 1.6;
 	 font-family: $family-monospace;
-	 direction: ltr;
-	 text-align: left;
-	 white-space: pre;
-	 word-spacing: normal;
-	 word-break: normal;
-	 word-wrap: normal;
-	 line-height: 1.6em;
-
-	 -moz-tab-size: $base-code-tab-size;
-	 -o-tab-size: $base-code-tab-size;
-	 tab-size: $base-code-tab-size;
-
-	 -webkit-hyphens: none;
-	 -moz-hyphens: none;
-	 -ms-hyphens: none;
-	 hyphens: none;
+	 padding: 0 0 1em 1em;
  }
 
 //  pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,

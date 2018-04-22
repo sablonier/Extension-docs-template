@@ -85,18 +85,24 @@
                     </div>
 
                     {% if github is defined %}
-                        <a href="https://github.com/{{ github.user }}/{{ github.repo }}/fork" class="button is-dark is-hidden-touch" aria-label="Fork {{ github.user }}/{{ github.repo }} on GitHub">
+                        <a href="https://github.com/{{ github.user }}/{{ github.repo }}" class="button is-info is-hidden-touch" aria-label="This extension on GitHub">
+                            <span class="icon is-small">
+                                <i class="fas fa-home"></i>
+                            </span>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://github.com/{{ github.user }}/{{ github.repo }}/fork" class="button is-info is-hidden-touch" aria-label="Fork {{ github.user }}/{{ github.repo }} on GitHub">
                             <span class="icon is-small">
                                 <i class="fas fa-code-branch"></i>
                             </span>
                             <span>Fork</span>
                         </a>
                         {% if github.editlink is defined %}
-                        <a href="{{ github.editlink }}{{ currentFile }}" class="button is-dark is-hidden-touch" aria-label="Edit on GitHub">
+                        <a href="{{ github.editlink }}{{ currentFile }}" class="button is-info is-hidden-touch" aria-label="Edit the contents of this page on GitHub">
                             <span class="icon is-small">
                                 <i class="fab fa-github"></i>
                             </span>
-                            <span>Edit on GitHub</span>
+                            <span>Edit this page</span>
                         </a>
                         {% endif %}
                     {% endif %}
