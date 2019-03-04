@@ -55,17 +55,22 @@
                 {% if menu is iterable %}
                 <div class="docs__sidebar--menu">
                     <nav id="sidebar" class="menu" role="navigation">
+                        {% for section in menu %}
+                        <p class="menu-label">
+                                {{ section.label }}
+                        </p>
                         <ul class="menu-list">
-                            {% for filename, item in menu %}
-                                {% set filename = filename|replace({'.md': '.html'}) %}
+                            {% for item in section.items %}
+                                {% set filename = item.file|replace({'.md': '.html'}) %}
                                 {% set currentFileMd = currentFile|replace({'.md': '.html'}) %}
                                 <li class="{{ item.class|default() }}">
                                     <a href="{{ item.absoluteUrl|default(baseUrl ~ '/' ~ filename) }}" class="{{ filename == currentFileMd ? 'is-active' }}">
-                                        {{ item.label|raw }}
+                                        {{ item.file|replace({'.md': ''})|capitalize }}
                                     </a>
                                 </li>
                             {% endfor %}
                         </ul>
+                        {% endfor %}
                     </nav>
                 </div>
                 {% endif %}
