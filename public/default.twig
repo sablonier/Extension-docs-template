@@ -73,7 +73,7 @@
                                             {% set currentFileMd = currentFile|replace({'.md': '.html'}) %}
                                             <li class="{{ item.class|default() }}">
                                                 <a href="{{ item.absoluteUrl|default(baseUrl ~ '/' ~ filename) }}" class="{{ filename == currentFileMd ? 'is-active' }}">
-                                                    {{ subitem.file|replace({'.md': ''})|capitalize }}
+                                                    {{ subitem.label }}
                                                 </a>
                                             </li>
                                         </ul>
