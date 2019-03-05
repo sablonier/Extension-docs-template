@@ -67,7 +67,19 @@
                                     <a href="{{ item.absoluteUrl|default(baseUrl ~ '/' ~ filename) }}" class="{{ filename == currentFileMd ? 'is-active' }}">
                                         {{ item.file|replace({'.md': ''})|capitalize }}
                                     </a>
+                                    {% for subitem in item.submenu %}
+                                        <ul>
+                                            {% set filename = subitem.file|replace({'.md': '.html'}) %}
+                                            {% set currentFileMd = currentFile|replace({'.md': '.html'}) %}
+                                            <li class="{{ item.class|default() }}">
+                                                <a href="{{ item.absoluteUrl|default(baseUrl ~ '/' ~ filename) }}" class="{{ filename == currentFileMd ? 'is-active' }}">
+                                                    {{ subitem.file|replace({'.md': ''})|capitalize }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    {% endfor %}
                                 </li>
+                                
                             {% endfor %}
                         </ul>
                         {% endfor %}
